@@ -37,7 +37,8 @@ void runTask2And3() {
   stdout.write('Is it read? (yes/no): ');
   final String readAnswer = stdin.readLineSync() ?? 'no';
 
-  final bool isRead = readAnswer.trim().toLowerCase() == 'yes' ||
+  final bool isRead =
+      readAnswer.trim().toLowerCase() == 'yes' ||
       readAnswer.trim().toLowerCase() == 'y';
 
   String category;
@@ -86,7 +87,7 @@ void runTask4() {
     '1984',
     'The Master and Margarita',
     'The Hobbit',
-    'Dune'
+    'Dune',
   ];
   print('My book list: $shelf');
   print('Books on shelf: ${shelf.length}');
@@ -142,7 +143,7 @@ void runTask4() {
     ' START ',
     ...shelf,
     if (addBonus) 'Bonus Book',
-    for (final String singleBook in extraBooks) 'Extra: $singleBook'
+    for (final String singleBook in extraBooks) 'Extra: $singleBook',
   ];
   print('Final big list "all": $all');
   print('');
@@ -157,7 +158,6 @@ void runTask5() {
   print('7 % 2 = ${7 % 2}');
 
   print('Short-circuit evaluation (&& and ||):');
-  
 
   bool getTrue() => true;
   bool getFalse() => false;
@@ -166,14 +166,13 @@ void runTask5() {
   if (getTrue() || crash()) {
     print('  || Works! (First part was true, second was ignored)');
   }
-  
+
   if (getFalse() && crash()) {
-   
+    // Этот блок никогда не выполнится, но анализатор этого не знает
   } else {
     print('  && Works! (Short-circuit prevented crash)');
   }
 
-  // --- ТУТ ДОЛЖЕН БЫТЬ КОД С NULL-SAFETY ---
   final String? testNull = stdin.readLineSync();
   print('Null-aware ?. length: ${testNull?.length}');
   print('Null-aware ?? default value: ${testNull ?? "Value was null"}');
@@ -192,4 +191,4 @@ void runTask5() {
     ..write('from ')
     ..write('cascade!');
   print('Buffer result: $buffer');
-} 
+}
