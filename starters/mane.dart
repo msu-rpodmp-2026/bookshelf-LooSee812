@@ -1,12 +1,11 @@
 import 'dart:io';
 
 void main() {
-  runTask1(); 
-  runTask2And3(); 
-  runTask4(); 
-  runTask5(); 
+  runTask1();
+  runTask2And3();
+  runTask4();
+  runTask5();
 }
-
 
 // 2.2. Task 1. Welcome and Environment Info
 
@@ -16,7 +15,6 @@ void runTask1() {
   print('OS: ' + Platform.operatingSystem);
   print('');
 }
-
 
 // 2.3. Task 2 & 2.4. Task 3. Book Data Input & Calculations
 
@@ -40,13 +38,12 @@ void runTask2And3() {
 
   stdout.write('Is it read? (yes/no): ');
   final String readAnswer = stdin.readLineSync() ?? 'no';
-  
+
   bool isRead = false;
-  if (readAnswer.trim().toLowerCase() == 'yes' || readAnswer.trim().toLowerCase() == 'y') {
+  if (readAnswer.trim().toLowerCase() == 'yes' ||
+      readAnswer.trim().toLowerCase() == 'y') {
     isRead = true;
   }
-
-
 
   String category = '';
   if (pages < 150) {
@@ -57,13 +54,10 @@ void runTask2And3() {
     category = 'volume';
   }
 
-
   final double timeHours = pages / 50;
-
 
   final int currentYear = DateTime.now().year;
   final int bookAge = currentYear - year;
-
 
   final List<String> authorWords = author.split(' ');
   String initials = '';
@@ -73,7 +67,6 @@ void runTask2And3() {
     }
   }
 
-
   print('');
   print('  Title: $title');
   print('  Author: $author ($initials)');
@@ -81,7 +74,7 @@ void runTask2And3() {
   print('  Pages: $pages ($category)');
   print('  Rating: $rating / 5');
   print('  Estimated Reading Time: ' + timeHours.toStringAsFixed(1) + ' hours');
-  
+
   if (isRead == true) {
     print('  Status: Read');
   } else {
@@ -89,6 +82,7 @@ void runTask2And3() {
   }
   print('');
 }
+
 void runTask4() {
   print(' Task 4: Collections ');
 
@@ -97,23 +91,23 @@ void runTask4() {
     '1984',
     'The Master and Margarita',
     'The Hobbit',
-    'Dune'
+    'Dune',
   ];
   print('My book list: $shelf');
   print('Books on shelf: ${shelf.length}');
   print('First book: ${shelf.first}');
   print('Last book: ${shelf.last}');
-  
-  shelf.insert(0, 'The Old Man and the Sea'); 
-  shelf.add('The Idiot');               
-  shelf.remove('1984');             
+
+  shelf.insert(0, 'The Old Man and the Sea');
+  shelf.add('The Idiot');
+  shelf.remove('1984');
   print('Updated book list: $shelf');
   print('');
 
   stdout.write('Enter genres separated by comma (e.g. drama,sci-fi,drama): ');
   final String genresLine = stdin.readLineSync() ?? '';
   final List<String> temporaryList = genresLine.split(',');
-  final Set<String> genres = temporaryList.toSet(); 
+  final Set<String> genres = temporaryList.toSet();
   print('Unique genres: $genres');
   print('');
 
@@ -133,13 +127,13 @@ void runTask4() {
   for (String key in pagesByBook.keys) {
     final int currentBookPages = pagesByBook[key] ?? 0;
     totalPages = totalPages + currentBookPages;
-    
+
     if (currentBookPages > maxPages) {
       maxPages = currentBookPages;
       maxBookTitle = key;
     }
   }
-  
+
   final double averagePages = totalPages / pagesByBook.length;
   print('Thickest book: $maxBookTitle ($maxPages pages)');
   print('Total pages: $totalPages');
@@ -151,46 +145,47 @@ void runTask4() {
 
   final List<String> all = [
     ' START ',
-    ...shelf, 
-    if (addBonus == true) 'Bonus Book', 
-    for (String singleBook in extraBooks) 'Extra: $singleBook' 
+    ...shelf,
+    if (addBonus == true) 'Bonus Book',
+    for (String singleBook in extraBooks) 'Extra: $singleBook',
   ];
   print('Final big list "all": $all');
   print('');
 }
-
 
 // 2.6. Task 5. Operators
 
 void runTask5() {
   print('Task 5: Operators Test ');
 
-  print('7 / 2 = ${7 / 2}');   
-  print('7 ~/ 2 = ${7 ~/ 2}'); 
-  print('7 % 2 = ${7 % 2}');   
+  print('7 / 2 = ${7 / 2}');
+  print('7 ~/ 2 = ${7 ~/ 2}');
+  print('7 % 2 = ${7 % 2}');
 
   print('Short-circuit evaluation (&& and ||):');
   if (true || (10 / 0 == 0)) {
     print('  || Works! (Second part with division by zero was ignored)');
   }
   if (false && (10 / 0 == 0)) {
-
   } else {
     print('  && Works! (First part was false, avoided crash)');
   }
 
   String? testNull;
-  print('Null-aware ?. length: ${testNull?.length}'); 
+  print('Null-aware ?. length: ${testNull?.length}');
   print('Null-aware ?? default value: ${testNull ?? "Value was null"}');
-  
-  testNull ??= 'New Assigned Value'; 
+
+  testNull ??= 'New Assigned Value';
   print('After ??= operator: $testNull');
 
   final List<int> fList = [];
-  fList.add(5); 
+  fList.add(5);
   print('Modified final list: $fList');
 
   final StringBuffer buffer = StringBuffer();
-  buffer..write('Hello ')..write('from ')..write('cascade!');
+  buffer
+    ..write('Hello ')
+    ..write('from ')
+    ..write('cascade!');
   print('Buffer result: $buffer');
 }
