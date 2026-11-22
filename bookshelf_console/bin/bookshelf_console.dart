@@ -68,7 +68,8 @@ void runTask2And3() {
   stdout.write('Рейтинг (от 0 до 5): ');
   final String? ratingInput = readLine();
   final double? rating = double.tryParse(ratingInput ?? '');
-  if (rating == null || rating < 0 || rating > 5) {
+  // Добавлена проверка isFinite, чтобы отсечь NaN и Бесконечность
+  if (rating == null || !rating.isFinite || rating < 0 || rating > 5) {
     print('Ошибка: Рейтинг должен быть числом от 0 до 5. Программа завершена.');
     exit(1);
   }
