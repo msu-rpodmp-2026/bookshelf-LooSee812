@@ -1,6 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 
+// Вспомогательная функция для чтения строки в UTF-8
+String? readLine() => stdin.readLineSync(encoding: utf8);
+
 void main() {
+  stdout.encoding = utf8;
+  stderr.encoding = utf8;
+
   runTask1();
   runTask2And3();
   runTask4();
@@ -9,45 +16,79 @@ void main() {
 
 // 2.2. Task 1. Welcome and Environment Info
 void runTask1() {
-  print('=== Project: BookShelf Console App ===');
-  print('Dart Version: ${Platform.version}');
-  print('OS: ${Platform.operatingSystem}');
+  print('=== Проект: Консольное приложение BookShelf ===');
+  print('Версия Dart: ${Platform.version}');
+  print('Операционная система: ${Platform.operatingSystem}');
   print('');
 }
 
 // 2.3. Task 2 & 2.4. Task 3. Book Data Input & Calculations
 void runTask2And3() {
-  print('--- Tasks 2 & 3: Book Information Input ---');
+  print('--- Задачи 2 и 3: Ввод информации о книге ---');
 
-  stdout.write('Book Title: ');
-  final String title = stdin.readLineSync() ?? 'No Title';
+  stdout.write('Название книги: ');
+  final String? titleInput = readLine();
+  final String title = (titleInput == null || titleInput.trim().isEmpty)
+      ? 'Без названия'
+      : titleInput.trim();
+  if (titleInput == null || titleInput.trim().isEmpty) {
+    print('Ошибка: Название книги не может быть пустым. Программа завершена.');
+    exit(1);
+  }
 
-  stdout.write('Book Author: ');
-  final String author = stdin.readLineSync() ?? 'Unknown';
+  stdout.write('Автор книги: ');
+  final String? authorInput = readLine();
+  final String author = (authorInput == null || authorInput.trim().isEmpty)
+      ? 'Неизвестен'
+      : authorInput.trim();
+  if (authorInput == null || authorInput.trim().isEmpty) {
+    print('Ошибка: Автор не может быть пустым. Программа завершена.');
+    exit(1);
+  }
 
-  stdout.write('Publication Year: ');
-  final int year = int.tryParse(stdin.readLineSync() ?? '') ?? 0;
+  // Проверка года (должен быть положительным числом)
+  stdout.write('Год издания (только цифры): ');
+  final String? yearInput = readLine();
+  final int? year = int.tryParse(yearInput ?? '');
+  if (year == null || year <= 0) {
+    print('Ошибка: Год должен быть положительным числом. Программа завершена.');
+    exit(1);
+  }
 
-  stdout.write('Number of Pages: ');
-  final int pages = int.tryParse(stdin.readLineSync() ?? '') ?? 0;
+  // Проверка количества страниц (должно быть положительным числом)
+  stdout.write('Количество страниц (только цифры): ');
+  final String? pagesInput = readLine();
+  final int? pages = int.tryParse(pagesInput ?? '');
+  if (pages == null || pages <= 0) {
+    print('Ошибка: Страниц должно быть больше нуля. Программа завершена.');
+    exit(1);
+  }
 
-  stdout.write('Rating (0-5): ');
-  final double rating = double.tryParse(stdin.readLineSync() ?? '') ?? 0.0;
+  // Проверка рейтинга (должен быть от 0 до 5)
+  stdout.write('Рейтинг (от 0 до 5): ');
+  final String? ratingInput = readLine();
+  final double? rating = double.tryParse(ratingInput ?? '');
+  if (rating == null || rating < 0 || rating > 5) {
+    print('Ошибка: Рейтинг должен быть числом от 0 до 5. Программа завершена.');
+    exit(1);
+  }
 
-  stdout.write('Is it read? (yes/no): ');
-  final String readAnswer = stdin.readLineSync() ?? 'no';
+  stdout.write('Книга прочитана? (да/нет): ');
+  final String readAnswer = (readLine() ?? 'нет').trim().toLowerCase();
 
   final bool isRead =
-      readAnswer.trim().toLowerCase() == 'yes' ||
-      readAnswer.trim().toLowerCase() == 'y';
+      readAnswer == 'да' ||
+      readAnswer == 'д' ||
+      readAnswer == 'yes' ||
+      readAnswer == 'y';
 
   String category;
   if (pages < 150) {
-    category = 'brochure';
+    category = 'брошюра';
   } else if (pages <= 399) {
-    category = 'book';
+    category = 'книга';
   } else {
-    category = 'volume';
+    category = 'том';
   }
 
   final double timeHours = pages / 50;
@@ -63,58 +104,60 @@ void runTask2And3() {
   }
 
   print('');
-  print('  Title: $title');
-  print('  Author: $author ($initials)');
-  print('  Year: $year ($bookAge years ago)');
-  print('  Pages: $pages ($category)');
-  print('  Rating: $rating / 5');
-  print('  Estimated Reading Time: ${timeHours.toStringAsFixed(1)} hours');
+  print('  Название: $title');
+  print('  Автор: $author ($initials)');
+  print('  Год: $year ($bookAge лет назад)');
+  print('  Страницы: $pages ($category)');
+  print('  Рейтинг: $rating / 5');
+  print('  Примерное время чтения: ${timeHours.toStringAsFixed(1)} ч.');
 
   if (isRead) {
-    print('  Status: Read');
+    print('  Статус: Прочитана');
   } else {
-    print('  Status: Not Read');
+    print('  Статус: Не прочитана');
   }
   print('');
 }
 
 // 2.5. Task 4. Collections
 void runTask4() {
-  print(' Task 4: Collections ');
+  print('--- Задача 4: Коллекции ---');
 
   final List<String> shelf = [
-    'Crime and Punishment',
+    'Преступление и наказание',
     '1984',
-    'The Master and Margarita',
-    'The Hobbit',
-    'Dune',
+    'Мастер и Маргарита',
+    'Хоббит',
+    'Дюна',
   ];
-  print('My book list: $shelf');
-  print('Books on shelf: ${shelf.length}');
-  print('First book: ${shelf.first}');
-  print('Last book: ${shelf.last}');
+  print('Мой список книг: $shelf');
+  print('Книг на полке: ${shelf.length}');
+  print('Первая книга: ${shelf.first}');
+  print('Последняя книга: ${shelf.last}');
 
-  shelf.insert(0, 'The Old Man and the Sea');
-  shelf.add('The Idiot');
+  shelf.insert(0, 'Старик и море');
+  shelf.add('Идиот');
   shelf.remove('1984');
-  print('Updated book list: $shelf');
+  print('Обновленный список книг: $shelf');
   print('');
 
-  stdout.write('Enter genres separated by comma (e.g. drama,sci-fi,drama): ');
-  final String genresLine = stdin.readLineSync() ?? '';
+  stdout.write(
+    'Введите жанры через запятую (например, драма,фантастика,драма): ',
+  );
+  final String genresLine = readLine() ?? '';
   final List<String> temporaryList = genresLine.split(',');
   final Set<String> genres = temporaryList.toSet();
-  print('Unique genres: $genres');
+  print('Уникальные жанры: $genres');
   print('');
 
   final Map<String, int> pagesByBook = {
-    'Crime and Punishment': 600,
+    'Преступление и наказание': 600,
     '1984': 320,
-    'The Master and Margarita': 500,
-    'The Hobbit': 280,
-    'Dune': 700,
+    'Мастер и Маргарита': 500,
+    'Хоббит': 280,
+    'Дюна': 700,
   };
-  print('Pages map: $pagesByBook');
+  print('Словарь страниц: $pagesByBook');
 
   int totalPages = 0;
   int maxPages = 0;
@@ -131,64 +174,69 @@ void runTask4() {
   }
 
   final double averagePages = totalPages / pagesByBook.length;
-  print('Thickest book: $maxBookTitle ($maxPages pages)');
-  print('Total pages: $totalPages');
-  print('Average pages: ${averagePages.toStringAsFixed(1)}');
+  print('Самая толстая книга: $maxBookTitle ($maxPages страниц)');
+  print('Всего страниц: $totalPages');
+  print('Среднее количество страниц: ${averagePages.toStringAsFixed(1)}');
   print('');
 
   const bool addBonus = true;
-  final List<String> extraBooks = ['Fahrenheit 451', 'Brave New World'];
+  final List<String> extraBooks = [
+    '451 градус по Фаренгейту',
+    'О дивный новый мир',
+  ];
 
   final List<String> all = [
-    ' START ',
+    ' НАЧАЛО ',
     ...shelf,
-    if (addBonus) 'Bonus Book',
-    for (final String singleBook in extraBooks) 'Extra: $singleBook',
+    if (addBonus) 'Бонусная книга',
+    for (final String singleBook in extraBooks) 'Дополнительно: $singleBook',
   ];
-  print('Final big list "all": $all');
+  print('Итоговый большой список "all": $all');
   print('');
 }
 
 // 2.6. Task 5. Operators
 void runTask5() {
-  print('Task 5: Operators Test ');
+  print('--- Задача 5: Операторы ---');
 
   print('7 / 2 = ${7 / 2}');
   print('7 ~/ 2 = ${7 ~/ 2}');
   print('7 % 2 = ${7 % 2}');
 
-  print('Short-circuit evaluation (&& and ||):');
+  print('Сокращенное вычисление (&& и ||):');
 
   bool getTrue() => true;
   bool getFalse() => false;
   bool crash() => throw UnsupportedError('Crash');
 
   if (getTrue() || crash()) {
-    print('  || Works! (First part was true, second was ignored)');
+    print('  || Работает! (Первая часть true, вторая проигнорирована)');
   }
 
   if (getFalse() && crash()) {
     // Этот блок никогда не выполнится, но анализатор этого не знает
   } else {
-    print('  && Works! (Short-circuit prevented crash)');
+    print('  && Работает! (Сокращение предотвратило краш)');
   }
 
-  final String? testNull = stdin.readLineSync();
+  final String? testNull = readLine();
   print('Null-aware ?. length: ${testNull?.length}');
-  print('Null-aware ?? default value: ${testNull ?? "Value was null"}');
+  print(
+    'Null-aware ?? значение по умолчанию: ${testNull ?? "Значение было null"}',
+  );
 
-  String? anotherNull = stdin.readLineSync();
-  anotherNull ??= 'New Assigned Value';
-  print('After ??= operator: $anotherNull');
+  String? anotherNull = readLine();
+  anotherNull ??= 'Новое присвоенное значение';
+  print('После оператора ??=: $anotherNull');
 
   final List<int> fList = [];
   fList.add(5);
-  print('Modified final list: $fList');
+  print('Измененный final список: $fList');
 
   final StringBuffer buffer = StringBuffer();
   buffer
-    ..write('Hello ')
-    ..write('from ')
-    ..write('cascade!');
-  print('Buffer result: $buffer');
+    ..write('Привет ')
+    ..write('из ')
+    ..write('каскада!');
+  print('Результат буфера: $buffer');
 }
